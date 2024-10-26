@@ -61,7 +61,6 @@ document.addEventListener('click', async (e) => {
 
 // Main functionality
 document.addEventListener('DOMContentLoaded', async () => {
-    // ... existing initialization code ...
 
     // Curl command is now hardcoded to https://wibble.foo/json
 
