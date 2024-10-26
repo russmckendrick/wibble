@@ -1,5 +1,26 @@
 // functions/json.js
 
+function isValidIPv4(ip) {
+  if (!ip) return false;
+  // Check if it's an IPv4 address
+  const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+  if (!ipv4Regex.test(ip)) return false;
+  
+  // Validate each octet
+  const octets = ip.split('.');
+  return octets.every(octet => {
+    const num = parseInt(octet, 10);
+    return num >= 0 && num <= 255;
+  });
+}
+
+function isValidIPv6(ip) {
+  if (!ip) return false;
+  // Basic IPv6 format check
+  const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^([0-9a-fA-F]{1,4}:){1,7}:|^([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}$|^([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}$|^([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}$|^([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}$|^([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}$|^[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})$|^:((:[0-9a-fA-F]{1,4}){1,7}|:)$/;
+  return ipv6Regex.test(ip);
+}
+
 export function onRequest(context) {
   const request = context.request;
   
@@ -9,33 +30,26 @@ export function onRequest(context) {
     provider: 'Cloudflare'
   };
 
-  // Try specific IPv4 headers first
-  clientIP.ipv4 = request.headers.get('CF-Connecting-IPv4') || 
-                  request.headers.get('X-Real-IP');
-
-  // Try specific IPv6 headers
-  clientIP.ipv6 = request.headers.get('CF-Connecting-IPv6');
-
-  // If we don't have both yet, try the general CF-Connecting-IP
+  // Get IPs from headers
   const connectingIP = request.headers.get('CF-Connecting-IP');
-  if (connectingIP) {
-    if (connectingIP.includes(':') && !clientIP.ipv6) {
-      clientIP.ipv6 = connectingIP;
-    } else if (!connectingIP.includes(':') && !clientIP.ipv4) {
-      clientIP.ipv4 = connectingIP;
-    }
+  const ipv4 = request.headers.get('CF-Connecting-IPv4');
+  const ipv6 = request.headers.get('CF-Connecting-IPv6');
+  const realIP = request.headers.get('X-Real-IP');
+
+  // Try to get IPv4
+  if (ipv4 && isValidIPv4(ipv4)) {
+    clientIP.ipv4 = ipv4;
+  } else if (realIP && isValidIPv4(realIP)) {
+    clientIP.ipv4 = realIP;
+  } else if (connectingIP && isValidIPv4(connectingIP)) {
+    clientIP.ipv4 = connectingIP;
   }
 
-  // Check if we can get the IPv4 from the client hints
-  if (!clientIP.ipv4 && request.headers.get('sec-ch-ua-platform')) {
-    const xff = request.headers.get('X-Forwarded-For');
-    if (xff) {
-      const ips = xff.split(',').map(ip => ip.trim());
-      const possibleIPv4 = ips[0];
-      if (possibleIPv4 && !possibleIPv4.includes(':')) {
-        clientIP.ipv4 = possibleIPv4;
-      }
-    }
+  // Try to get IPv6
+  if (ipv6 && isValidIPv6(ipv6)) {
+    clientIP.ipv6 = ipv6;
+  } else if (connectingIP && isValidIPv6(connectingIP)) {
+    clientIP.ipv6 = connectingIP;
   }
 
   return new Response(JSON.stringify(clientIP, null, 2), {
