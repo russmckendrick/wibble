@@ -3,65 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Address Lookup 🔍</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <style>
-        /* Previous styles remain the same */
-        [data-bs-theme="dark"] {
-            color-scheme: dark;
-        }
-        
-        [data-bs-theme="dark"] .card {
-            background-color: #2b3035;
-            border-color: #373b3e;
-        }
-
-        [data-bs-theme="dark"] .bg-light {
-            background-color: #212529 !important;
-        }
-
-        .copy-button {
-            transition: all 0.2s ease;
-        }
-
-        .copy-button:hover {
-            transform: scale(1.1);
-        }
-
-        .theme-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .theme-toggle:hover .theme-icon {
-            transform: rotate(45deg);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1050;
-        }
-
-        .ip-container {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-    </style>
+    <title>IP Address Information</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
-    <!-- Previous HTML remains the same -->
+<body>
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h1 class="h4 mb-0">IP Address Information 🌐</h1>
-                        <button class="btn btn-outline-light btn-sm theme-toggle" id="theme-toggle" title="Toggle theme">
+                        <h4 class="mb-0">IP Address Information 🌐</h4>
+                        <button id="theme-toggle" class="btn btn-link text-white p-0 theme-toggle">
                             <svg class="theme-icon sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
@@ -70,46 +24,84 @@
                             </svg>
                         </button>
                     </div>
+
                     <div class="card-body">
                         <div id="loading" class="text-center">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p class="text-muted mt-2" id="loading-text">Checking primary service...</p>
+                            <p id="loading-text" class="mt-2">Checking primary service...</p>
                         </div>
+
                         <div id="results" class="d-none">
+                            <!-- IP Addresses -->
                             <div class="mb-4">
-                                <h2 class="h6 text-secondary mb-2">📍 IPv4 Address</h2>
+                                <h6 class="text-secondary mb-2">📍 IPv4 Address</h6>
                                 <div class="ip-container">
-                                    <p id="ipv4" class="lead mb-0"></p>
-                                    <button class="btn btn-outline-primary btn-sm copy-button" data-clipboard-target="ipv4">
+                                    <span id="ipv4"></span>
+                                    <button class="copy-button" data-clipboard-target="ipv4">
                                         📋 Copy
                                     </button>
                                 </div>
                             </div>
+
                             <div id="ipv6-container" class="mb-4">
-                                <h2 class="h6 text-secondary mb-2">📍 IPv6 Address</h2>
+                                <h6 class="text-secondary mb-2">📍 IPv6 Address</h6>
                                 <div class="ip-container">
-                                    <p id="ipv6" class="lead mb-0"></p>
-                                    <button class="btn btn-outline-primary btn-sm copy-button" data-clipboard-target="ipv6">
+                                    <span id="ipv6"></span>
+                                    <button class="copy-button" data-clipboard-target="ipv6">
                                         📋 Copy
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Location Information -->
+                            <div class="geo-info mb-4">
+                                <div class="geo-item">
+                                    <div class="geo-item-label">City</div>
+                                    <div id="city" class="geo-item-value">Loading...</div>
+                                </div>
+                                <div class="geo-item">
+                                    <div class="geo-item-label">Region</div>
+                                    <div id="region" class="geo-item-value">Loading...</div>
+                                </div>
+                                <div class="geo-item">
+                                    <div class="geo-item-label">Country</div>
+                                    <div id="country" class="geo-item-value">Loading...</div>
+                                </div>
+                                <div class="geo-item">
+                                    <div class="geo-item-label">ISP</div>
+                                    <div id="isp" class="geo-item-value">Loading...</div>
+                                </div>
+                                <div class="geo-item">
+                                    <div class="geo-item-label">Timezone</div>
+                                    <div id="timezone" class="geo-item-value">Loading...</div>
+                                </div>
+                            </div>
+
+                            <!-- Map -->
+                            <div id="map" class="mb-4"></div>
+
                             <div class="alert alert-info">
                                 <small>
-                                    Add <code>/json</code> to the URL to get the IP information in JSON format 🔄<br>
+                                    Add '/json' to the URL to get the IP information in JSON format 🔄<br>
                                     <a href="/json" class="text-decoration-none">https://wibble.foo/json</a>
                                 </small>
                             </div>
+
                             <div id="service-info" class="mt-3">
-                                <small class="text-muted">Provided by: <span id="service-provider-container">
-                                    <a href="https://www.ipify.org" id="ipify-link" class="text-decoration-none d-none" target="_blank" rel="noopener">ipify.org</a>
-                                    <a href="https://ip-api.com" id="ipapi-link" class="text-decoration-none d-none" target="_blank" rel="noopener">ip-api.com</a>
-                                    <a href="https://ipapi.co" id="ipapico-link" class="text-decoration-none d-none" target="_blank" rel="noopener">ipapi.co</a>
-                                </span> ⚡</small>
+                                <small>
+                                    Provided by: 
+                                    <span id="service-provider-container">
+                                        <a id="ipify-link" href="https://www.ipify.org" class="text-decoration-none d-none" target="_blank" rel="noopener">ipify.org</a>
+                                        <a id="ipapi-link" href="https://ip-api.com" class="text-decoration-none d-none" target="_blank" rel="noopener">ip-api.com</a>
+                                        <a id="ipapico-link" href="https://ipapi.co" class="text-decoration-none d-none" target="_blank" rel="noopener">ipapi.co</a>
+                                    </span>
+                                    ⚡
+                                </small>
                             </div>
                         </div>
+
                         <div id="error" class="d-none">
                             <div class="alert alert-danger mb-0">
                                 An error occurred while fetching IP information 😕 Please try again later.
@@ -121,202 +113,16 @@
         </div>
     </div>
 
-    <!-- Toast for copy confirmation -->
     <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
                 IP address copied! 📋✨
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 
-
-    <script>
-        // Theme management
-        const themeToggle = document.getElementById('theme-toggle');
-        const sunIcon = document.querySelector('.sun-icon');
-        const moonIcon = document.querySelector('.moon-icon');
-        const toast = document.querySelector('.toast');
-        const bsToast = new bootstrap.Toast(toast, { delay: 2000 });
-
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-bs-theme', theme);
-            localStorage.setItem('theme', theme);
-            updateThemeIcon(theme);
-        }
-
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                sunIcon.classList.add('d-none');
-                moonIcon.classList.remove('d-none');
-            } else {
-                sunIcon.classList.remove('d-none');
-                moonIcon.classList.add('d-none');
-            }
-        }
-
-        // Check system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTheme('dark');
-        } else {
-            setTheme('light');
-        }
-
-        // Load saved preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setTheme(savedTheme);
-        }
-
-        // Theme toggle handler
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        });
-
-        // Listen for system theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                setTheme(e.matches ? 'dark' : 'light');
-            }
-        });
-
-        // Copy functionality
-        document.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('copy-button')) {
-                const targetId = e.target.dataset.clipboardTarget;
-                const textToCopy = document.getElementById(targetId).textContent;
-                
-                try {
-                    await navigator.clipboard.writeText(textToCopy);
-                    bsToast.show();
-                } catch (err) {
-                    console.error('Failed to copy:', err);
-                }
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const loadingEl = document.getElementById('loading');
-            const loadingText = document.getElementById('loading-text');
-            const resultsEl = document.getElementById('results');
-            const errorEl = document.getElementById('error');
-            const ipv4El = document.getElementById('ipv4');
-            const ipv6El = document.getElementById('ipv6');
-            const ipv6ContainerEl = document.getElementById('ipv6-container');
-            const serviceProviderEl = document.getElementById('service-provider');
-
-            try {
-                if (window.location.pathname.endsWith('/json')) {
-                    document.body.innerHTML = '';
-                    const addresses = await getIpAddresses(loadingText);
-                    document.body.textContent = JSON.stringify(addresses, null, 2);
-                    document.body.style.whiteSpace = 'pre';
-                    document.body.style.fontFamily = 'monospace';
-                    return;
-                }
-
-                const { addresses, provider } = await getIpAddresses(loadingText);
-                
-                ipv4El.textContent = addresses.ipv4 || 'Not available';
-                // Update provider link visibility
-document.querySelectorAll('#service-provider-container a').forEach(link => {
-    if (link.textContent.includes(provider)) {
-        link.classList.remove('d-none');
-    } else {
-        link.classList.add('d-none');
-    }
-});
-                
-                if (addresses.ipv6) {
-                    ipv6El.textContent = addresses.ipv6;
-                } else {
-                    ipv6ContainerEl.classList.add('d-none');
-                }
-
-                loadingEl.classList.add('d-none');
-                resultsEl.classList.remove('d-none');
-            } catch (error) {
-                console.error('Error:', error);
-                loadingEl.classList.add('d-none');
-                errorEl.classList.remove('d-none');
-            }
-        });
-
-        // IP Address fetching functions remain the same
-        async function getIpAddresses(loadingText) {
-            try {
-                loadingText.textContent = 'Checking primary service (ipify)... 🔍';
-                const addresses = await getIpifyAddresses();
-                return { addresses, provider: 'ipify.org' };
-            } catch (error) {
-                console.log('ipify failed, trying ip-api...');
-            }
-
-            try {
-                loadingText.textContent = 'Trying backup service (ip-api)... 🔄';
-                const addresses = await getIpApiAddresses();
-                return { addresses, provider: 'ip-api.com' };
-            } catch (error) {
-                console.log('ip-api failed, trying ipapi.co...');
-            }
-
-            try {
-                loadingText.textContent = 'Trying final backup service (ipapi.co)... ⚡';
-                const addresses = await getIpapiAddresses();
-                return { addresses, provider: 'ipapi.co' };
-            } catch (error) {
-                throw new Error('All services failed');
-            }
-        }
-
-        async function getIpifyAddresses() {
-            const addresses = {
-                ipv4: null,
-                ipv6: null
-            };
-
-            const ipv4Response = await fetch('https://api.ipify.org?format=json');
-            const ipv4Data = await ipv4Response.json();
-            addresses.ipv4 = ipv4Data.ip;
-
-            try {
-                const ipv6Response = await fetch('https://api64.ipify.org?format=json');
-                const ipv6Data = await ipv6Response.json();
-                if (ipv6Data.ip !== addresses.ipv4) {
-                    addresses.ipv6 = ipv6Data.ip;
-                }
-            } catch (ipv6Error) {
-                console.log('IPv6 not available from ipify');
-            }
-
-            return addresses;
-        }
-
-        async function getIpApiAddresses() {
-            const response = await fetch('http://ip-api.com/json/?fields=query,status');
-            const data = await response.json();
-            
-            if (data.status !== 'success') {
-                throw new Error('ip-api request failed');
-            }
-
-            return {
-                ipv4: data.query,
-                ipv6: null
-            };
-        }
-
-        async function getIpapiAddresses() {
-            const response = await fetch('https://ipapi.co/json/');
-            const data = await response.json();
-            
-            return {
-                ipv4: data.ip,
-                ipv6: null
-            };
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
