@@ -61,6 +61,35 @@ document.addEventListener('click', async (e) => {
 
 // Main functionality
 document.addEventListener('DOMContentLoaded', async () => {
+    // ... existing initialization code ...
+
+    // Curl command is now hardcoded to https://wibble.foo/json
+
+    // Copy functionality for all copy buttons
+    document.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('copy-button')) {
+            const targetId = e.target.dataset.clipboardTarget;
+            const textToCopy = document.getElementById(targetId).textContent;
+            
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                // Store original button text
+                const originalText = e.target.innerHTML;
+                // Update button text to show success
+                e.target.innerHTML = '✅ Copied!';
+                // Reset button text after 2 seconds
+                setTimeout(() => {
+                    e.target.innerHTML = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                e.target.innerHTML = '❌ Failed';
+                setTimeout(() => {
+                    e.target.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+    });
     const loadingEl = document.getElementById('loading');
     const loadingText = document.getElementById('loading-text');
     const resultsEl = document.getElementById('results');
@@ -99,15 +128,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Initialize map
         if (data.lat && data.lon) {
-            const map = L.map('map').setView([data.lat, data.lon], 13);
+            // Clear any existing map instance
+            const mapContainer = document.getElementById('map');
+            mapContainer.innerHTML = '';
+            
+            const map = L.map('map', {
+                center: [data.lat, data.lon],
+                zoom: 13,
+                zoomControl: true,
+                scrollWheelZoom: true
+            });
+
+            // Add the tile layer with proper attribution
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+                maxZoom: 19,
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             
-            L.marker([data.lat, data.lon])
+            // Add marker with popup
+            const marker = L.marker([data.lat, data.lon])
                 .addTo(map)
                 .bindPopup(`Your location: ${data.city}, ${data.regionName}`)
                 .openPopup();
+
+            // Force a map refresh
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 100);
         }
 
         // Show results

@@ -83,10 +83,17 @@
                             <div id="map" class="mb-4"></div>
 
                             <div class="alert alert-info">
-                                <small>
-                                    Add '/json' to the URL to get the IP information in JSON format 🔄<br>
-                                    <a href="/json" class="text-decoration-none">https://wibble.foo/json</a>
-                                </small>
+                                <div class="mb-2">
+                                    <small>Get IP information in JSON format using curl:</small>
+                                </div>
+                                <div class="command-container d-flex align-items-center bg-light p-2 rounded">
+                                    <div class="flex-grow-1">
+                                        <code id="curl-command">curl -s https://wibble.foo/json</code>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-secondary copy-button ms-2" data-clipboard-target="curl-command">
+                                        📋 Copy
+                                    </button>
+                                </div>
                             </div>
 
                             <div id="service-info" class="mt-3">
