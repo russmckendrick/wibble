@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('city').textContent = data.city || 'Unknown';
         document.getElementById('region').textContent = data.regionName || 'Unknown';
         document.getElementById('country').textContent = data.country || 'Unknown';
+        document.getElementById('postal').textContent = data.postal || 'Unknown';
         document.getElementById('isp').textContent = data.isp || 'Unknown';
         document.getElementById('timezone').textContent = data.timezone || 'Unknown';
         
@@ -202,6 +203,7 @@ async function getIpData(loadingText) {
                 ipv6: ipv6Address,   // IPv6 address (if available)
                 city: ipapiData.city,
                 regionName: ipapiData.region,
+                postal: ipapiData.postal, // Add postal code
                 country: ipapiData.country_name,
                 lat: ipapiData.latitude,
                 lon: ipapiData.longitude,

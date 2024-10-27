@@ -15,100 +15,100 @@
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">IP Address Information 🌐</h4>
-                        <button id="theme-toggle" class="btn btn-link text-white p-0 theme-toggle">
+                        <div id="theme-toggle" class="theme-toggle">
                             <svg class="theme-icon sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                             <svg class="theme-icon moon-icon d-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                             </svg>
-                        </button>
+                        </div>
                     </div>
-
+    
                     <div class="card-body">
                         <div id="loading" class="text-center">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p id="loading-text" class="mt-2">Checking primary service...</p>
+                            <div id="loading-text" class="mt-3">Checking primary service...</div>
                         </div>
-
+    
                         <div id="results" class="d-none">
-                            <!-- IP Addresses -->
                             <div class="mb-4">
                                 <h6 class="text-secondary mb-2">📍 IPv4 Address</h6>
                                 <div class="ip-container">
                                     <span id="ipv4"></span>
-                                    <button class="copy-button" data-clipboard-target="ipv4">
-                                        📋 Copy
-                                    </button>
+                                    <button class="copy-button" data-clipboard-target="ipv4">📋 Copy</button>
                                 </div>
                             </div>
-
+    
                             <div id="ipv6-container" class="mb-4">
                                 <h6 class="text-secondary mb-2">📍 IPv6 Address</h6>
                                 <div class="ip-container">
                                     <span id="ipv6"></span>
-                                    <button class="copy-button" data-clipboard-target="ipv6">
-                                        📋 Copy
-                                    </button>
+                                    <button class="copy-button" data-clipboard-target="ipv6">📋 Copy</button>
                                 </div>
                             </div>
-
-                            <!-- Location Information -->
+    
                             <div class="geo-info mb-4">
                                 <div class="geo-item">
                                     <div class="geo-item-label">City</div>
                                     <div id="city" class="geo-item-value">Loading...</div>
                                 </div>
+    
                                 <div class="geo-item">
                                     <div class="geo-item-label">Region</div>
                                     <div id="region" class="geo-item-value">Loading...</div>
                                 </div>
+    
+                                <div class="geo-item">
+                                    <div class="geo-item-label">Post / Zip Code</div>
+                                    <div id="postal" class="geo-item-value">Loading...</div>
+                                </div>
+    
                                 <div class="geo-item">
                                     <div class="geo-item-label">Country</div>
                                     <div id="country" class="geo-item-value">Loading...</div>
                                 </div>
+    
                                 <div class="geo-item">
                                     <div class="geo-item-label">ISP</div>
                                     <div id="isp" class="geo-item-value">Loading...</div>
                                 </div>
+    
                                 <div class="geo-item">
                                     <div class="geo-item-label">Timezone</div>
                                     <div id="timezone" class="geo-item-value">Loading...</div>
                                 </div>
                             </div>
-
-                            <!-- Map -->
+    
                             <div id="map" class="mb-4"></div>
-
+    
                             <div class="alert alert-info">
                                 <div class="mb-2">
-                                    <small>Get IP information in JSON format using curl:</small>
+                                    <span class="small">Get IP information in JSON format using curl:</span>
                                 </div>
                                 <div class="command-container d-flex align-items-center bg-light p-2 rounded">
                                     <div class="flex-grow-1">
                                         <code id="curl-command">curl -s https://wibble.foo/json</code>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-secondary copy-button ms-2" data-clipboard-target="curl-command">
-                                        📋 Copy
-                                    </button>
+                                    <button class="copy-button" data-clipboard-target="curl-command">📋 Copy</button>
                                 </div>
                             </div>
-
+    
                             <div id="service-info" class="mt-3">
-                                <small>
+                                <span class="small">
                                     Provided by: 
                                     <span id="service-provider-container">
-                                        <a id="ipify-link" href="https://www.ipify.org" class="text-decoration-none d-none" target="_blank" rel="noopener">ipify.org</a>
-                                        <a id="ipapi-link" href="https://ip-api.com" class="text-decoration-none d-none" target="_blank" rel="noopener">ip-api.com</a>
-                                        <a id="ipapico-link" href="https://ipapi.co" class="text-decoration-none d-none" target="_blank" rel="noopener">ipapi.co</a>
+                                        <a id="ipify-link" class="text-decoration-none d-none" href="https://www.ipify.org" target="_blank" rel="noopener">ipify.org</a>
+                                        <a id="ipapi-link" class="text-decoration-none d-none" href="https://ip-api.com" target="_blank" rel="noopener">ip-api.com</a>
+                                        <a id="ipapico-link" class="text-decoration-none d-none" href="https://ipapi.co" target="_blank" rel="noopener">ipapi.co</a>
                                     </span>
                                     ⚡
-                                </small>
+                                </span>
                             </div>
                         </div>
-
+    
                         <div id="error" class="d-none">
                             <div class="alert alert-danger mb-0">
                                 An error occurred while fetching IP information 😕 Please try again later.
@@ -119,7 +119,7 @@
             </div>
         </div>
     </div>
-
+    
     <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
