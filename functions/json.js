@@ -1,5 +1,3 @@
-// functions/json.js
-
 function isValidIPv4(ip) {
   if (!ip) return false;
   // Check if it's an IPv4 address
@@ -23,6 +21,32 @@ function isValidIPv6(ip) {
 
 export function onRequest(context) {
   const request = context.request;
+  
+  // Check if the request is from the allowed domain
+  const origin = request.headers.get('Origin');
+  const allowedOrigin = 'https://wibble.foo';
+  
+  // If origin doesn't match, return 403 Forbidden
+  if (!origin || origin !== allowedOrigin) {
+    return new Response('Forbidden', {
+      status: 403,
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    });
+  }
+
+  // Handle preflight CORS request
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      headers: {
+        'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '86400'
+      }
+    });
+  }
   
   const clientIP = {
     ipv4: null,
@@ -54,8 +78,9 @@ export function onRequest(context) {
 
   return new Response(JSON.stringify(clientIP, null, 2), {
     headers: {
-      'content-type': 'application/json;charset=UTF-8',
-      'Access-Control-Allow-Origin': '*'
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Access-Control-Allow-Origin': allowedOrigin,
+      'Vary': 'Origin' // Important when using specific origin instead of wildcard
     }
   });
 }
