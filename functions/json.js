@@ -4,7 +4,7 @@ export function onRequest(context) {
   const clientIP = {
     ipv4: null,
     ipv6: null,
-    provider: 'Cloudflare'
+    provider: 'Wibble'
   };
 
   // Get connecting IP
