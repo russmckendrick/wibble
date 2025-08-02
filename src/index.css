@@ -1,6 +1,13 @@
 /* Leaflet CSS import for React Leaflet */
 @import "leaflet/dist/leaflet.css";
 
+/* Modern fonts for 2025 design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Premium display fonts - fallback to similar system fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+
 @import "tailwindcss";
 
 @theme {
@@ -24,6 +31,26 @@
   
   /* RGB variants for alpha transparency */
   --color-card-rgb: 238, 232, 213;
+  
+  /* Modern 2025 Design System Properties */
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+  
+  /* Animation Properties */
+  --spring-easing: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121);
+  --smooth-easing: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --bounce-easing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Glass Morphism Properties */
+  --glass-backdrop: blur(10px);
+  --glass-border: rgba(131, 148, 150, 0.2);
+  --glass-shadow: 0 4px 12px rgba(0, 43, 54, 0.1);
+  
+  /* Gradient Animation Colors */
+  --gradient-start: #268bd2;
+  --gradient-middle: #2aa198;
+  --gradient-end: #6c71c4;
 
   --color-background: var(--color-base3);
   --color-foreground: var(--color-base00);
@@ -72,6 +99,10 @@
   
   /* RGB variants for alpha transparency - dark theme */
   --color-card-rgb: 7, 54, 66;
+  
+  /* Dark theme glass morphism */
+  --glass-border: rgba(131, 148, 150, 0.15);
+  --glass-shadow: 0 4px 20px rgba(38, 139, 210, 0.1);
 }
 
 /* System dark mode fallback */
@@ -102,20 +133,50 @@
   }
 }
 
+/* Custom property definitions for animations */
+@property --gradient-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --gradient-start {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #268bd2;
+}
+
+@property --gradient-end {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #2aa198;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
   }
+  
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-body);
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Enable reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-/* Clean Minimalist Wibble Design */
+/* Modern 2025 Design System */
 @layer components {
-  /* Subtle decorative shapes */
+  /* Enhanced geometric background with particle hints */
   .geometric-bg {
     position: relative;
     overflow: hidden;
@@ -124,63 +185,97 @@
   .geometric-bg::before {
     content: '';
     position: absolute;
-    top: 20%;
-    right: -10%;
-    width: 300px;
-    height: 300px;
-    background: var(--color-cyan);
-    opacity: 0.03;
+    top: 15%;
+    right: -8%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--color-cyan) 0%, transparent 70%);
+    opacity: 0.05;
     border-radius: 50%;
     z-index: 0;
+    animation: float 8s ease-in-out infinite;
   }
   
   .geometric-bg::after {
     content: '';
     position: absolute;
-    bottom: 10%;
-    left: -5%;
-    width: 200px;
-    height: 200px;
-    background: var(--color-blue);
-    opacity: 0.02;
-    border-radius: 50%;
+    bottom: 5%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(45deg, var(--color-blue), var(--color-violet));
+    opacity: 0.03;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
     z-index: 0;
+    animation: morph 12s ease-in-out infinite;
   }
   
-  /* Clean Hero Title */
+  /* Modern Hero Title with gradient */
   .hero-title {
     @apply text-4xl md:text-5xl font-bold tracking-tight;
-    color: var(--color-blue);
+    font-family: var(--font-display);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-blue), var(--color-cyan));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 3s ease-in-out infinite alternate;
   }
   
-  /* Large, clean IP display */
+  /* Revolutionary IP display with animated gradient */
   .ip-display {
     @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight;
-    color: var(--color-blue);
+    font-family: var(--font-display);
+    font-weight: 800;
     line-height: 1.1;
+    background: linear-gradient(
+      var(--gradient-angle),
+      var(--gradient-start),
+      var(--gradient-middle),
+      var(--gradient-end)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: 
+      gradient-morph 3s ease-in-out infinite,
+      gradient-rotate 8s linear infinite;
+    text-shadow: 0 0 30px rgba(var(--gradient-start), 0.3);
+    will-change: background-position;
   }
   
-  /* Clean minimal cards */
+  /* Modern glass morphism cards */
   .location-card {
-    @apply rounded-2xl p-6 md:p-8 transition-all duration-200 relative;
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 1px 3px rgba(0, 43, 54, 0.08);
+    @apply rounded-2xl p-6 md:p-8 relative;
+    background: rgba(var(--color-card-rgb), 0.7);
+    backdrop-filter: var(--glass-backdrop);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: all 300ms var(--spring-easing);
+    will-change: transform, box-shadow, backdrop-filter;
   }
   
   .location-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 43, 54, 0.12);
-    border-color: var(--color-cyan);
+    transform: translateY(-4px) scale(1.02);
+    backdrop-filter: blur(15px);
+    box-shadow: 
+      0 8px 25px rgba(38, 139, 210, 0.15),
+      0 0 20px rgba(var(--color-cyan), 0.1);
+    border-color: rgba(var(--color-cyan), 0.3);
   }
   
-  /* Main IP card with subtle accent */
+  /* Hero IP card with enhanced glass morphism */
   .ip-card {
-    @apply rounded-2xl p-8 md:p-12 transition-all duration-200 relative;
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 2px 8px rgba(0, 43, 54, 0.08);
-    position: relative;
+    @apply rounded-3xl p-8 md:p-12 relative;
+    background: rgba(var(--color-card-rgb), 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 
+      var(--glass-shadow),
+      0 0 40px rgba(38, 139, 210, 0.1);
+    transition: all 400ms var(--spring-easing);
+    will-change: transform, box-shadow, backdrop-filter;
+    overflow: hidden;
   }
   
   .ip-card::before {
@@ -189,28 +284,76 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-cyan), var(--color-blue));
-    border-radius: 0.5rem 0.5rem 0 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-blue), var(--color-violet));
+    background-size: 200% 100%;
+    animation: gradient-flow 3s ease-in-out infinite;
+  }
+  
+  .ip-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(38, 139, 210, 0.03) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 500ms ease;
+    pointer-events: none;
   }
   
   .ip-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 43, 54, 0.15);
+    transform: translateY(-6px) scale(1.01);
+    backdrop-filter: blur(25px);
+    box-shadow: 
+      0 12px 40px rgba(38, 139, 210, 0.2),
+      0 0 60px rgba(var(--color-cyan), 0.15);
   }
   
-  /* Clean copy button */
+  .ip-card:hover::after {
+    opacity: 1;
+  }
+  
+  /* Modern copy button with glass morphism */
   .copy-button {
-    @apply px-6 py-3 text-base font-semibold rounded-xl transition-all duration-200;
-    background: var(--color-green);
+    @apply px-8 py-4 text-base font-semibold rounded-2xl relative;
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, var(--color-green), var(--color-cyan));
     color: var(--color-base3);
     border: none;
+    box-shadow: 
+      0 4px 12px rgba(42, 161, 152, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 300ms var(--bounce-easing);
+    will-change: transform, box-shadow;
+    overflow: hidden;
+  }
+  
+  .copy-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 500ms ease;
   }
   
   .copy-button:hover {
-    background: var(--color-cyan);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(42, 161, 152, 0.25);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 
+      0 8px 25px rgba(42, 161, 152, 0.4),
+      0 0 20px rgba(var(--color-cyan), 0.3);
+  }
+  
+  .copy-button:hover::before {
+    left: 100%;
+  }
+  
+  .copy-button:active {
+    transform: translateY(0) scale(0.98);
   }
   
   /* Status badges - clean and minimal */
@@ -308,5 +451,178 @@
     background: rgba(203, 75, 22, 0.1);
     color: var(--color-orange);
     border-color: rgba(203, 75, 22, 0.2);
+  }
+}
+
+/* Modern 2025 Animations */
+@keyframes gradient-morph {
+  0%, 100% {
+    --gradient-start: #268bd2;
+    --gradient-middle: #2aa198;
+    --gradient-end: #6c71c4;
+  }
+  25% {
+    --gradient-start: #2aa198;
+    --gradient-middle: #6c71c4;
+    --gradient-end: #268bd2;
+  }
+  50% {
+    --gradient-start: #6c71c4;
+    --gradient-middle: #268bd2;
+    --gradient-end: #2aa198;
+  }
+  75% {
+    --gradient-start: #268bd2;
+    --gradient-middle: #6c71c4;
+    --gradient-end: #2aa198;
+  }
+}
+
+@keyframes gradient-rotate {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
+}
+
+@keyframes morph {
+  0%, 100% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    transform: rotate(0deg);
+  }
+  25% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(90deg);
+  }
+  50% {
+    border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
+    transform: rotate(180deg);
+  }
+  75% {
+    border-radius: 70% 30% 40% 60% / 30% 60% 40% 70%;
+    transform: rotate(270deg);
+  }
+}
+
+/* Performance optimizations */
+.ip-display,
+.hero-title,
+.geometric-bg::before,
+.geometric-bg::after,
+.ip-card::before {
+  will-change: transform, background-position, opacity;
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 768px) {
+  /* Mobile optimizations */
+  .geometric-bg::before,
+  .geometric-bg::after {
+    width: 200px;
+    height: 200px;
+    opacity: 0.02;
+  }
+
+  .ip-display {
+    font-size: clamp(2rem, 8vw, 4rem);
+    line-height: 1.2;
+  }
+
+  .hero-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .location-card,
+  .ip-card {
+    padding: 1rem;
+  }
+
+  .copy-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile optimizations */
+  .ip-display {
+    font-size: clamp(1.5rem, 10vw, 3rem);
+  }
+
+  .geometric-bg::before,
+  .geometric-bg::after {
+    display: none;
+  }
+}
+
+@media (min-width: 1440px) {
+  /* Large screen enhancements */
+  .ip-display {
+    font-size: clamp(4rem, 6vw, 6rem);
+  }
+
+  .geometric-bg::before {
+    width: 600px;
+    height: 600px;
+    opacity: 0.06;
+  }
+
+  .geometric-bg::after {
+    width: 400px;
+    height: 400px;
+    opacity: 0.04;
+  }
+}
+
+/* Disable animations for reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .ip-display,
+  .hero-title,
+  .geometric-bg::before,
+  .geometric-bg::after,
+  .ip-card::before,
+  .copy-button::before {
+    animation: none !important;
+  }
+
+  .location-card:hover,
+  .ip-card:hover,
+  .copy-button:hover {
+    transform: none !important;
   }
 }

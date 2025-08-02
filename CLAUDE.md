@@ -4,17 +4,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Wibble is a web application that displays IP address information to users. It consists of:
-- A static frontend (HTML/CSS/JS) that shows IP address details and geolocation
-- A Cloudflare Function endpoint at `/json` that returns IP information in JSON format
+Wibble is a modern IP address lookup web application built with React, TypeScript, and Vite. It features a cutting-edge 2025 design with "Authentic Bold Futurism" aesthetics, displaying comprehensive IP address information with advanced visual effects and immersive interactions.
 
 ## Architecture
 
-### Frontend (index.html, script.js, style.css)
-- Uses Bootstrap 5 for styling with light/dark theme support
-- Integrates Leaflet.js for map visualization
-- Fetches IP data from external APIs (ipify.org and ipapi.co)
-- Provides copy-to-clipboard functionality for IP addresses
+### Frontend (React + TypeScript + Vite)
+- **Framework**: React 19 with TypeScript and Vite build tool
+- **Styling**: Tailwind CSS 4 with custom Solarized color scheme
+- **UI Components**: shadcn/ui component library with Radix UI primitives
+- **State Management**: Zustand for client state, React hooks for API data
+- **Visualization**: Leaflet.js for geographic visualization (to be replaced with Three.js particle system)
+- **Animations**: Framer Motion for advanced animations and micro-interactions
+- **Theme**: Dark/light mode support using next-themes
+
+### Design System (2025 Modern Specification)
+- **Color Palette**: Solarized base with custom CSS properties for theming
+- **Typography**: Inter (body), JetBrains Mono (monospace) - to be enhanced with display fonts
+- **Layout**: Asymmetrical single-page design with three main zones:
+  - Hero Data Zone (40% viewport): Large IP display with particle system
+  - Information Flow Zone (40% viewport): Location and network data with glass morphism
+  - Interactive Data Zone (20% viewport): Action buttons with advanced hover states
+- **Effects**: Glass morphism, gradient animations, particle systems, micro-interactions
 
 ### Backend (functions/json.js)
 - Cloudflare Function that extracts client IP from request headers
@@ -24,15 +34,75 @@ Wibble is a web application that displays IP address information to users. It co
 
 ## Development Commands
 
-This is a static site with Cloudflare Functions. No build process is required for the frontend.
+```bash
+# Install dependencies
+npm install
 
-For local development:
-- Use a local web server to serve the static files
-- The Cloudflare Function at `/json` requires deployment to Cloudflare
+# Start development server
+npm run dev
 
-## Key Implementation Details
+# Build for production
+npm run build
 
-- The frontend makes API calls to ipify.org for IP addresses and ipapi.co for geolocation
-- The `/json` endpoint is a serverless function that runs on Cloudflare's edge network
-- IP validation functions in json.js use regex patterns for IPv4 and IPv6
-- The site is available at https://wibble.foo/
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
+```
+
+## Key Technologies & Libraries
+
+### Core Dependencies
+- React 19 + React DOM
+- TypeScript 5.8+
+- Vite 7 (build tool)
+- Tailwind CSS 4 (styling)
+
+### UI & Components
+- @radix-ui/* (accessible UI primitives)
+- shadcn/ui (component library)
+- lucide-react (icons)
+- framer-motion (animations)
+- next-themes (theme management)
+
+### Data & Maps
+- zustand (state management)
+- leaflet + react-leaflet (maps, to be replaced)
+- sonner (toast notifications)
+
+### Planned Enhancements
+- Three.js for 3D particle system visualization
+- Custom fonts: Druk Bold Condensed, Obviously Heavy
+- WebGL-powered orbital particle system
+- Advanced micro-animations with spring physics
+- Responsive particle counts based on device capabilities
+
+## Modern Design Features (2025)
+
+- **Glass Morphism**: Backdrop blur effects with subtle transparency
+- **Gradient Text**: Animated gradient effects on IP address display
+- **Particle System**: 3D orbital visualization replacing traditional maps
+- **Micro-Interactions**: Springy animations with modern easing functions
+- **Progressive Enhancement**: Graceful fallbacks for different device capabilities
+- **Accessibility**: Respects prefers-reduced-motion for all animations
+
+## Implementation Status
+
+Currently implementing the comprehensive 2025 design specification with:
+- ✅ Solarized color system with CSS custom properties
+- ✅ Modern component architecture with shadcn/ui
+- ✅ Responsive grid layout with asymmetrical composition
+- 🚧 Glass morphism effects and advanced animations
+- 🚧 Three.js particle system for geographic visualization
+- 🚧 Custom display fonts and enhanced typography
+- 🚧 Advanced micro-interactions and hover states
+
+## Key Files
+
+- `src/App.tsx` - Main application component with layout zones
+- `src/index.css` - Global styles with Solarized theme and modern effects
+- `src/hooks/useIPData.ts` - IP data fetching and caching logic
+- `src/components/MapComponent.tsx` - Geographic visualization (to be enhanced)
+- `functions/json.js` - Cloudflare serverless function for IP extraction
+- `project/design.md` - Complete 2025 design specification
