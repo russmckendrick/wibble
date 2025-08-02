@@ -1,0 +1,312 @@
+/* Leaflet CSS import for React Leaflet */
+@import "leaflet/dist/leaflet.css";
+
+@import "tailwindcss";
+
+@theme {
+  /* Solarized Light Theme */
+  --color-base03: #002b36;
+  --color-base02: #073642;
+  --color-base01: #586e75;
+  --color-base00: #657b83;
+  --color-base0: #839496;
+  --color-base1: #93a1a1;
+  --color-base2: #eee8d5;
+  --color-base3: #fdf6e3;
+  --color-yellow: #b58900;
+  --color-orange: #cb4b16;
+  --color-red: #dc322f;
+  --color-magenta: #d33682;
+  --color-violet: #6c71c4;
+  --color-blue: #268bd2;
+  --color-cyan: #2aa198;
+  --color-green: #859900;
+  
+  /* RGB variants for alpha transparency */
+  --color-card-rgb: 238, 232, 213;
+
+  --color-background: var(--color-base3);
+  --color-foreground: var(--color-base00);
+  --color-card: var(--color-base2);
+  --color-card-foreground: var(--color-base01);
+  --color-popover: var(--color-base3);
+  --color-popover-foreground: var(--color-base00);
+  --color-primary: var(--color-blue);
+  --color-primary-foreground: var(--color-base3);
+  --color-secondary: var(--color-base2);
+  --color-secondary-foreground: var(--color-base01);
+  --color-muted: var(--color-base2);
+  --color-muted-foreground: var(--color-base01);
+  --color-accent: var(--color-cyan);
+  --color-accent-foreground: var(--color-base3);
+  --color-destructive: var(--color-red);
+  --color-destructive-foreground: var(--color-base3);
+  --color-border: var(--color-base1);
+  --color-input: var(--color-base2);
+  --color-ring: var(--color-blue);
+
+  --radius: 0.75rem;
+}
+
+/* Solarized Dark Theme */
+:root.dark {
+  --color-background: var(--color-base03);
+  --color-foreground: var(--color-base0);
+  --color-card: var(--color-base02);
+  --color-card-foreground: var(--color-base1);
+  --color-popover: var(--color-base03);
+  --color-popover-foreground: var(--color-base0);
+  --color-primary: var(--color-blue);
+  --color-primary-foreground: var(--color-base03);
+  --color-secondary: var(--color-base02);
+  --color-secondary-foreground: var(--color-base1);
+  --color-muted: var(--color-base02);
+  --color-muted-foreground: var(--color-base01);
+  --color-accent: var(--color-cyan);
+  --color-accent-foreground: var(--color-base03);
+  --color-destructive: var(--color-red);
+  --color-destructive-foreground: var(--color-base03);
+  --color-border: var(--color-base01);
+  --color-input: var(--color-base02);
+  --color-ring: var(--color-blue);
+  
+  /* RGB variants for alpha transparency - dark theme */
+  --color-card-rgb: 7, 54, 66;
+}
+
+/* System dark mode fallback */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: var(--color-base03);
+    --color-foreground: var(--color-base0);
+    --color-card: var(--color-base02);
+    --color-card-foreground: var(--color-base1);
+    --color-popover: var(--color-base03);
+    --color-popover-foreground: var(--color-base0);
+    --color-primary: var(--color-blue);
+    --color-primary-foreground: var(--color-base03);
+    --color-secondary: var(--color-base02);
+    --color-secondary-foreground: var(--color-base1);
+    --color-muted: var(--color-base02);
+    --color-muted-foreground: var(--color-base01);
+    --color-accent: var(--color-cyan);
+    --color-accent-foreground: var(--color-base03);
+    --color-destructive: var(--color-red);
+    --color-destructive-foreground: var(--color-base03);
+    --color-border: var(--color-base01);
+    --color-input: var(--color-base02);
+    --color-ring: var(--color-blue);
+    
+    /* RGB variants for alpha transparency - system dark theme */
+    --color-card-rgb: 7, 54, 66;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* Clean Minimalist Wibble Design */
+@layer components {
+  /* Subtle decorative shapes */
+  .geometric-bg {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .geometric-bg::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: var(--color-cyan);
+    opacity: 0.03;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  .geometric-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    left: -5%;
+    width: 200px;
+    height: 200px;
+    background: var(--color-blue);
+    opacity: 0.02;
+    border-radius: 50%;
+    z-index: 0;
+  }
+  
+  /* Clean Hero Title */
+  .hero-title {
+    @apply text-4xl md:text-5xl font-bold tracking-tight;
+    color: var(--color-blue);
+  }
+  
+  /* Large, clean IP display */
+  .ip-display {
+    @apply text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight;
+    color: var(--color-blue);
+    line-height: 1.1;
+  }
+  
+  /* Clean minimal cards */
+  .location-card {
+    @apply rounded-2xl p-6 md:p-8 transition-all duration-200 relative;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0, 43, 54, 0.08);
+  }
+  
+  .location-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 43, 54, 0.12);
+    border-color: var(--color-cyan);
+  }
+  
+  /* Main IP card with subtle accent */
+  .ip-card {
+    @apply rounded-2xl p-8 md:p-12 transition-all duration-200 relative;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0, 43, 54, 0.08);
+    position: relative;
+  }
+  
+  .ip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-blue));
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .ip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 43, 54, 0.15);
+  }
+  
+  /* Clean copy button */
+  .copy-button {
+    @apply px-6 py-3 text-base font-semibold rounded-xl transition-all duration-200;
+    background: var(--color-green);
+    color: var(--color-base3);
+    border: none;
+  }
+  
+  .copy-button:hover {
+    background: var(--color-cyan);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(42, 161, 152, 0.25);
+  }
+  
+  /* Status badges - clean and minimal */
+  .status-badge {
+    @apply px-4 py-2 text-sm font-semibold rounded-full;
+    background: var(--color-base2);
+    color: var(--color-base01);
+    border: 1px solid var(--color-border);
+  }
+  
+  .ipv4-badge.active {
+    background: var(--color-blue);
+    color: var(--color-base3);
+    border-color: var(--color-blue);
+  }
+  
+  .ipv6-badge.active {
+    background: var(--color-violet);
+    color: var(--color-base3);
+    border-color: var(--color-violet);
+  }
+  
+  /* Clean map container */
+  .map-container {
+    @apply rounded-xl overflow-hidden;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0, 43, 54, 0.08);
+  }
+  
+  /* Data display - clean typography */
+  .data-label {
+    @apply text-xs font-medium uppercase tracking-wider;
+    color: var(--color-base01);
+    opacity: 0.7;
+    margin-bottom: 0.25rem;
+  }
+  
+  .data-value {
+    @apply text-base font-semibold;
+    color: var(--color-foreground);
+  }
+  
+  /* Stats numbers */
+  .stat-number {
+    @apply text-2xl md:text-3xl font-bold;
+    color: var(--color-blue);
+  }
+  
+  .stat-label {
+    @apply text-xs font-medium uppercase tracking-wider;
+    color: var(--color-base01);
+    opacity: 0.6;
+  }
+  
+  /* Section headers */
+  .section-title {
+    @apply text-lg font-semibold flex items-center;
+    color: var(--color-foreground);
+  }
+  
+  .section-title svg {
+    color: var(--color-cyan);
+  }
+  
+  /* Subtle decorative elements for cards */
+  .card-decoration {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 60px;
+    height: 60px;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  
+  .card-decoration.location-icon {
+    background: radial-gradient(circle, var(--color-cyan) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  
+  .card-decoration.network-icon {
+    background: linear-gradient(45deg, var(--color-green), transparent);
+    border-radius: 0.5rem;
+  }
+  
+  /* Clean status indicators */
+  .status-indicator {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    background: rgba(42, 161, 152, 0.1);
+    color: var(--color-cyan);
+    border: 1px solid rgba(42, 161, 152, 0.2);
+  }
+  
+  .status-indicator.warning {
+    background: rgba(203, 75, 22, 0.1);
+    color: var(--color-orange);
+    border-color: rgba(203, 75, 22, 0.2);
+  }
+}

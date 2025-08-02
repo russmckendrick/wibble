@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(npm create:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(true)",
+      "Bash(npm install)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(sed:*)",
+      "Bash(npm run build:*)",
+      "Bash(touch:*)"
+    ],
+    "deny": []
+  }
+}
