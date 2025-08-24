@@ -29,7 +29,7 @@ const cardVariants = {
   }
 }
 
-const ipRowVariants = {
+const rowVariants = {
   hidden: { opacity: 0, x: -50, scale: 0.9 },
   visible: {
     opacity: 1,
@@ -45,19 +45,30 @@ const ipRowVariants = {
   }
 }
 
-const buttonVariants = {
-  hover: {
-    scale: 1.05,
-    y: -2,
-    boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
-    transition: { duration: 0.2 }
-  },
-  tap: {
-    scale: 0.95,
-    y: 1,
-    transition: { duration: 0.1 }
-  }
+interface RowProps {
+  children: React.ReactNode
+  className?: string
+  onClick?: () => void
 }
+
+const Row = ({ children, className, onClick }: RowProps) => (
+  <motion.div
+    className={className}
+    variants={rowVariants}
+    initial="hidden"
+    animate="visible"
+    exit="exit"
+    whileHover={{
+      boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)",
+      transition: { duration: 0.2 }
+    }}
+    onClick={onClick}
+    layout
+  >
+    {children}
+  </motion.div>
+)
+
 
 export function IPDisplay() {
   const [ipInfo, setIpInfo] = React.useState<IPInfo>({})
@@ -130,12 +141,12 @@ export function IPDisplay() {
         initial="hidden"
         animate="visible"
         whileHover={{
-          y: -5,
+          scale: 1.02,
           boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
           transition: { duration: 0.2 }
         }}
       >
-        <Card>
+        <Card className="shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <CardHeader className="text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -166,19 +177,7 @@ export function IPDisplay() {
               <div className="space-y-3">
                 <AnimatePresence>
                   {ipInfo.ipv4 && (
-                    <motion.div
-                      className="flex flex-col sm:flex-row sm:items-center p-4 bg-lime-100 border-2 border-black rounded-lg gap-2"
-                      variants={ipRowVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      whileHover={{
-                        scale: 1.02,
-                        boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
-                        transition: { duration: 0.2 }
-                      }}
-                      layout
-                    >
+                    <Row className="flex flex-col sm:flex-row sm:items-center p-4 bg-lime-100 border-2 border-black rounded-lg gap-2">
                       <span className="text-lg font-bold">IPv4:</span>
                       <div className="flex items-center gap-2 flex-1">
                         <motion.span 
@@ -202,23 +201,11 @@ export function IPDisplay() {
                           )}
                         </Button>
                       </div>
-                    </motion.div>
+                    </Row>
                   )}
                   
                   {ipInfo.ipv6 && (
-                    <motion.div
-                      className="flex flex-col sm:flex-row sm:items-center p-4 bg-purple-100 border-2 border-black rounded-lg gap-2"
-                      variants={ipRowVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      whileHover={{
-                        scale: 1.02,
-                        boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
-                        transition: { duration: 0.2 }
-                      }}
-                      layout
-                    >
+                    <Row className="flex flex-col sm:flex-row sm:items-center p-4 bg-purple-100 border-2 border-black rounded-lg gap-2">
                       <span className="text-lg font-bold">IPv6:</span>
                       <div className="flex items-center gap-2 flex-1">
                         <motion.span 
@@ -229,33 +216,20 @@ export function IPDisplay() {
                         >
                           {ipInfo.ipv6}
                         </motion.span>
-                        <motion.div
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
+                        <Button
+                          onClick={() => copyToClipboard(ipInfo.ipv6!, 'ipv6')}
+                          size="sm"
+                          variant="outline"
+                          className="shrink-0"
                         >
-                          <Button
-                            onClick={() => copyToClipboard(ipInfo.ipv6!, 'ipv6')}
-                            size="sm"
-                            variant="outline"
-                            className="shrink-0"
-                          >
-                            <motion.div
-                              key={copied.ipv6 ? 'check' : 'copy'}
-                              initial={{ scale: 0, rotate: -180 }}
-                              animate={{ scale: 1, rotate: 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              {copied.ipv6 ? (
-                                <Check className="h-4 w-4" />
-                              ) : (
-                                <Copy className="h-4 w-4" />
-                              )}
-                            </motion.div>
-                          </Button>
-                        </motion.div>
+                          {copied.ipv6 ? (
+                            <Check className="h-4 w-4" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
                       </div>
-                    </motion.div>
+                    </Row>
                   )}
                   
                   {!loading && !ipInfo.ipv4 && !ipInfo.ipv6 && (
@@ -272,41 +246,33 @@ export function IPDisplay() {
               </div>
             )}
             
-            <motion.div
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
+            <Row 
+              className="flex flex-col sm:flex-row sm:items-center justify-center p-4 bg-cyan-100 border-2 border-black rounded-lg gap-2 w-full cursor-pointer text-lg font-bold"
+              onClick={fetchIPs}
             >
-              <Button 
-                onClick={fetchIPs} 
-                disabled={loading} 
-                className="w-full text-lg py-4 h-auto"
-                variant="secondary"
+              <motion.div
+                className="flex items-center justify-center"
+                animate={loading ? { rotate: 360 } : { rotate: 0 }}
+                transition={loading ? { duration: 1, repeat: Infinity, ease: "linear" } : { duration: 0.2 }}
               >
-                <motion.div
-                  className="flex items-center justify-center"
-                  animate={loading ? { rotate: 360 } : { rotate: 0 }}
-                  transition={loading ? { duration: 1, repeat: Infinity, ease: "linear" } : { duration: 0.2 }}
-                >
-                  {loading ? (
-                    <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      >
-                        <Loader2 className="h-5 w-5 mr-2" />
-                      </motion.div>
-                      🔄 Fetching...
-                    </>
-                  ) : (
-                    <>
-                      <RefreshCw className="h-5 w-5 mr-2" />
-                      🚀 Refresh IP
-                    </>
-                  )}
-                </motion.div>
-              </Button>
-            </motion.div>
+                {loading ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Loader2 className="h-5 w-5 mr-2" />
+                    </motion.div>
+                    🔄 Fetching...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-5 w-5 mr-2" />
+                    Refresh IP
+                  </>
+                )}
+              </motion.div>
+            </Row>
           </CardContent>
         </Card>
       </motion.div>

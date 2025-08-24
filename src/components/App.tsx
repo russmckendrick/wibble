@@ -50,7 +50,7 @@ export function App() {
             IP CHECKER
           </motion.h1>
           <motion.p 
-            className="text-lg md:text-xl font-bold text-black bg-white px-6 py-3 rounded-lg border-2 border-black inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="text-lg md:text-xl font-bold text-black bg-white px-6 py-3 rounded-lg border-2 border-black inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl"
             animate={{
               rotate: [-1, 1, -1],
             }}
