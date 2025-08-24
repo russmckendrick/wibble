@@ -17,25 +17,27 @@ export default {
 		switch (url.pathname) {
 			case '/__reload': {
 				// Server-Sent Events stream for local dev autoreload
-				const stream = new ReadableStream({
-					start(controller) {
-						(globalThis as any).__sseClients ??= new Set();
-						(globalThis as any).__sseClients.add(controller);
-						controller.enqueue(new TextEncoder().encode(': connected\n\n'));
-					},
-					cancel() {
-						try {
-							// Best-effort cleanup
-							const set: Set<any> = (globalThis as any).__sseClients;
-							if (set) {
-								for (const c of Array.from(set)) {
-									try { c.close?.(); } catch {}
-								}
-							}
-						} catch {}
-					}
-				});
-				return new Response(stream, {
+				const encoder = new TextEncoder();
+				const ts = new TransformStream();
+				const writer = ts.writable.getWriter();
+				await writer.write(encoder.encode(': connected\n\n'));
+
+				(globalThis as any).__reloadClients ??= new Set();
+				const clients: Set<any> = (globalThis as any).__reloadClients;
+				const clientRef = { writer, ping: 0 } as { writer: WritableStreamDefaultWriter<Uint8Array>; ping: number };
+				clientRef.ping = setInterval(() => {
+					writer.write(encoder.encode(': ping\n\n')).catch(() => {});
+				}, 25000) as unknown as number;
+				clients.add(clientRef);
+
+				ctx.waitUntil(
+					writer.closed.finally(() => {
+						try { clearInterval(clientRef.ping as unknown as number); } catch {}
+						try { clients.delete(clientRef); } catch {}
+					})
+				);
+
+				return new Response(ts.readable, {
 					headers: {
 						'Content-Type': 'text/event-stream',
 						'Cache-Control': 'no-cache',
@@ -48,12 +50,13 @@ export default {
 					return new Response('Method Not Allowed', { status: 405 });
 				}
 				// Broadcast a reload event to all connected clients (dev-only)
-				const clients: Set<any> = (globalThis as any).__sseClients || new Set();
-				for (const controller of clients) {
+				const encoder = new TextEncoder();
+				const clients: Set<any> = (globalThis as any).__reloadClients || new Set();
+				for (const client of clients) {
 					try {
-						controller.enqueue(new TextEncoder().encode('data: reload\n\n'));
+						await client.writer.write(encoder.encode('data: reload\n\n'));
 					} catch (e) {
-						try { clients.delete(controller); } catch {}
+						try { clients.delete(client); } catch {}
 					}
 				}
 				return new Response('ok');
