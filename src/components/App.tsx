@@ -66,7 +66,7 @@ export function App() {
               transition: { duration: 0.2 }
             }}
           >
-            🔍 Check your public IP address information! 🌐
+            🔍 Your Public IP Address 🌐
           </motion.p>
         </motion.div>
         

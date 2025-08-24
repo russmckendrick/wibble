@@ -131,7 +131,7 @@ export function IPDisplay() {
         animate="visible"
         whileHover={{
           y: -5,
-          boxShadow: "10px 10px 0px 0px rgba(0,0,0,1)",
+          boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
           transition: { duration: 0.2 }
         }}
       >
@@ -142,9 +142,6 @@ export function IPDisplay() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <CardTitle className="text-3xl mb-3">
-                Your Public IP Address
-              </CardTitle>
               <CardDescription className="text-base">
                 Your current public IP address information
               </CardDescription>
@@ -192,31 +189,18 @@ export function IPDisplay() {
                         >
                           {ipInfo.ipv4}
                         </motion.span>
-                        <motion.div
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
+                        <Button
+                          onClick={() => copyToClipboard(ipInfo.ipv4!, 'ipv4')}
+                          size="sm"
+                          variant="outline"
+                          className="shrink-0"
                         >
-                          <Button
-                            onClick={() => copyToClipboard(ipInfo.ipv4!, 'ipv4')}
-                            size="sm"
-                            variant="outline"
-                            className="shrink-0"
-                          >
-                            <motion.div
-                              key={copied.ipv4 ? 'check' : 'copy'}
-                              initial={{ scale: 0, rotate: -180 }}
-                              animate={{ scale: 1, rotate: 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              {copied.ipv4 ? (
-                                <Check className="h-4 w-4" />
-                              ) : (
-                                <Copy className="h-4 w-4" />
-                              )}
-                            </motion.div>
-                          </Button>
-                        </motion.div>
+                          {copied.ipv4 ? (
+                            <Check className="h-4 w-4" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
                       </div>
                     </motion.div>
                   )}
