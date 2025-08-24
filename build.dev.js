@@ -22,10 +22,6 @@ esbuild.build({
   },
 }).then(() => {
   console.log('👀 Watching for JS changes...')
-  // Notify the worker to broadcast a reload to connected clients
-  try {
-    fetch('http://localhost:8787/__reload-trigger', { method: 'POST' }).catch(() => {})
-  } catch {}
 }).catch((err) => {
   console.error('❌ Build failed:', err)
   process.exit(1)
