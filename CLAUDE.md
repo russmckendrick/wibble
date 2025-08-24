@@ -84,9 +84,16 @@ This is a Cloudflare Workers project named "wibble" that serves a React 19 IP Ad
 
 ### Public IP Integration
 - `public-ip` library fetches IP addresses from multiple services
-- Supports IPv4, IPv6, and general IP detection
+- Supports IPv4 and IPv6 detection
 - Error handling and loading states included
+- Copy-to-clipboard functionality with toast feedback
 - Uses HTTPS services (icanhazip, ipify) for browser compatibility
+
+### Component Architecture
+- Reusable `Row` component for consistent styling across IP rows and refresh button
+- Unified hover effects using 4px drop shadows
+- Framer Motion animations for smooth transitions and micro-interactions
+- Toast notifications using Sonner for user feedback
 
 ### Build Process
 - esbuild bundles React app to `public/dist/app.js`
@@ -98,3 +105,20 @@ This is a Cloudflare Workers project named "wibble" that serves a React 19 IP Ad
 - Worker serves static assets from public directory
 - Observability enabled for monitoring
 - Compatible with Workers runtime limitations
+- Custom domain route configured for www.wibble.foo
+
+## Important Development Notes
+
+### React 19 RC Compatibility
+- Use `--legacy-peer-deps` flag when installing new packages to resolve dependency conflicts
+- Example: `npm install package-name --legacy-peer-deps`
+
+### RetroUI Shadow Consistency  
+- Main card uses `shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]` to match footer
+- Hover effects use `shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`
+- Row components have consistent hover shadows via the reusable Row component
+
+### Animation Guidelines
+- Framer Motion is extensively used for transitions and micro-interactions
+- Loading states use rotating animations for refresh icons
+- Entry animations use staggered timing for visual hierarchy
