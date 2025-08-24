@@ -3,16 +3,39 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
+		"build": "npm run build:css:prod && npm run build:js",
+		"build:css": "npx tailwindcss -i ./src/globals.css -o ./public/dist/globals.css --watch",
+		"build:css:prod": "npx tailwindcss -i ./src/globals.css -o ./public/dist/globals.css --minify",
+		"build:js": "node build.js",
+		"deploy": "npm run build && wrangler deploy",
+		"dev": "npm run build && wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"autoprefixer": "^10.4.21",
+		"esbuild": "^0.25.9",
+		"postcss": "^8.5.6",
+		"postcss-cli": "^11.0.1",
+		"tailwindcss": "^3.4.17",
 		"typescript": "^5.5.2",
 		"vitest": "~3.2.0",
 		"wrangler": "^4.32.0"
+	},
+	"dependencies": {
+		"@radix-ui/react-slot": "^1.2.3",
+		"@types/react": "^19.1.11",
+		"@types/react-dom": "^19.1.7",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"framer-motion": "^12.23.12",
+		"lucide-react": "^0.541.0",
+		"public-ip": "^7.0.1",
+		"react": "^19.0.0-rc.1",
+		"react-dom": "^19.0.0-rc.1",
+		"sonner": "^2.0.7",
+		"tailwind-merge": "^3.3.1"
 	}
 }

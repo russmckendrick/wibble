@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run build:css:prod:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "WebFetch(domain:retroui.dev)",
+      "WebFetch(domain:www.retroui.dev)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

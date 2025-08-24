@@ -1,0 +1,110 @@
+import * as React from "react"
+import { motion } from "framer-motion"
+import { IPDisplay } from "./IPDisplay"
+import { Toaster } from "./retroui/Sonner"
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      staggerChildren: 0.2,
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+}
+
+export function App() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-cyan-300 flex flex-col items-center justify-center p-8">
+      <motion.div 
+        className="w-full max-w-2xl mx-auto space-y-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div className="text-center" variants={itemVariants}>
+          <motion.h1 
+            className="text-5xl md:text-6xl font-black text-white mb-6 drop-shadow-[6px_6px_0px_rgba(0,0,0,1)] [text-shadow:3px_3px_0px_rgba(0,0,0,1)]"
+            animate={{
+              rotate: [1, -1, 1],
+              scale: [1, 1.02, 1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
+            IP CHECKER
+          </motion.h1>
+          <motion.p 
+            className="text-lg md:text-xl font-bold text-black bg-white px-6 py-3 rounded-lg border-2 border-black inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            animate={{
+              rotate: [-1, 1, -1],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+            whileHover={{
+              scale: 1.05,
+              rotate: 0,
+              transition: { duration: 0.2 }
+            }}
+          >
+            🔍 Check your public IP address information! 🌐
+          </motion.p>
+        </motion.div>
+        
+        <motion.div variants={itemVariants}>
+          <IPDisplay />
+        </motion.div>
+        
+        <motion.footer 
+          className="text-center text-sm font-bold text-black bg-white px-6 py-3 rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+          variants={itemVariants}
+          whileHover={{
+            scale: 1.02,
+            boxShadow: "6px 6px 0px 0px rgba(0,0,0,1)",
+            transition: { duration: 0.2 }
+          }}
+        >
+          ⚡ Powered by{" "}
+          <a 
+            href="https://github.com/sindresorhus/public-ip" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 underline hover:no-underline font-black"
+          >
+            public-ip
+          </a>
+          {" "}and{" "}
+          <a 
+            href="https://www.retroui.dev" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-purple-600 underline hover:no-underline font-black"
+          >
+            RetroUI
+          </a>
+          {" "}🚀
+        </motion.footer>
+      </motion.div>
+      <Toaster />
+    </div>
+  )
+}
