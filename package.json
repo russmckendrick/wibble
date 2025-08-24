@@ -7,8 +7,12 @@
 		"build:css": "npx tailwindcss -i ./src/globals.css -o ./public/dist/globals.css --watch",
 		"build:css:prod": "npx tailwindcss -i ./src/globals.css -o ./public/dist/globals.css --minify",
 		"build:js": "node build.js",
+		"build:js:watch": "node build.dev.js",
 		"deploy": "npm run build && wrangler deploy",
 		"dev": "npm run build && wrangler dev",
+		"dev:watch": "RUNNING_DEV_WATCH=1 concurrently \"npm:watch:css\" \"npm:watch:js\" \"npm:start\"",
+		"watch:css": "npx tailwindcss -i ./src/globals.css -o ./public/dist/globals.css --watch",
+		"watch:js": "node build.dev.js",
 		"start": "wrangler dev",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"
@@ -16,6 +20,7 @@
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
 		"autoprefixer": "^10.4.21",
+		"concurrently": "^8.2.2",
 		"esbuild": "^0.25.9",
 		"postcss": "^8.5.6",
 		"postcss-cli": "^11.0.1",

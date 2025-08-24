@@ -2,6 +2,7 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { IPDisplay } from "./IPDisplay"
 import { Toaster } from "./retroui/Sonner"
+import { text } from "@/config/text"
 
 const containerVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -47,7 +48,7 @@ export function App() {
               ease: "easeInOut"
             }}
           >
-            IP CHECKER
+            {text.app.title}
           </motion.h1>
           <motion.p 
             className="text-lg md:text-xl font-bold text-black bg-white px-6 py-3 rounded-lg border-2 border-black inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl"
@@ -66,7 +67,7 @@ export function App() {
               transition: { duration: 0.2 }
             }}
           >
-            🔍 Your Public IP Address 🌐
+            {text.app.subtitle}
           </motion.p>
         </motion.div>
         
@@ -83,23 +84,23 @@ export function App() {
             transition: { duration: 0.2 }
           }}
         >
-          ⚡ Powered by{" "}
+          {text.app.poweredByPrefix}{" "}
           <a 
-            href="https://github.com/sindresorhus/public-ip" 
+            href={text.links.publicIp.href} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-600 underline hover:no-underline font-black"
           >
-            public-ip
+            {text.links.publicIp.label}
           </a>
-          {" "}and{" "}
+          {" "}{text.app.poweredByAnd}{" "}
           <a 
-            href="https://www.retroui.dev" 
+            href={text.links.retroUi.href} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-purple-600 underline hover:no-underline font-black"
           >
-            RetroUI
+            {text.links.retroUi.label}
           </a>
           {" "}🚀
         </motion.footer>
