@@ -4,13 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Cloudflare Workers project named "wibble" that serves a React 19 IP Address Checker application. The application uses RetroUI for a bold, retro-styled user interface and the public-ip library to display the user's public IP addresses (IPv4, IPv6, and general).
+This is a Cloudflare Workers project named "wibble" that serves a React 19 IP Address Checker application. The application uses RetroUI for a bold, retro-styled user interface, Framer Motion for animations, and the public-ip library to display the user's public IP addresses (IPv4 and IPv6).
 
 ## Architecture
 
 - **Runtime**: Cloudflare Workers (serverless edge computing)
 - **Frontend**: React 19 RC with TypeScript
 - **UI Library**: RetroUI (retro-styled components with bold colors and shadows)
+- **Animation**: Framer Motion for advanced animations and transitions
+- **Notifications**: Sonner for toast notifications
 - **Build System**: esbuild for JavaScript bundling, Tailwind CSS for styling
 - **Entry Points**: 
   - Worker: `src/index.ts` - Cloudflare Workers handler
@@ -49,7 +51,8 @@ This is a Cloudflare Workers project named "wibble" that serves a React 19 IP Ad
 
 ### UI Components (RetroUI)
 - `src/components/retroui/Button.tsx` - RetroUI Button component with bold styling
-- `src/components/retroui/Card.tsx` - RetroUI Card component with shadows and borders
+- `src/components/retroui/Card.tsx` - RetroUI Card component with shadows and borders  
+- `src/components/retroui/Sonner.tsx` - Toast notification component with RetroUI styling
 - `src/lib/utils.ts` - Utility functions including `cn()` for class merging
 
 ### Configuration & Build
