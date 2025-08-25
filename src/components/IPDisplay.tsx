@@ -248,31 +248,38 @@ export function IPDisplay() {
             )}
             
             <Row 
-              className="flex flex-col sm:flex-row sm:items-center justify-center p-4 bg-cyan-100 border-2 border-black rounded-lg gap-2 w-full cursor-pointer text-lg font-bold"
-              onClick={fetchIPs}
+              className={`flex flex-col sm:flex-row sm:items-center justify-center p-4 bg-cyan-100 border-2 border-black rounded-lg gap-2 w-full cursor-pointer text-lg font-bold ${loading ? 'opacity-80 cursor-wait pointer-events-none' : ''}`}
+              onClick={() => !loading && fetchIPs()}
             >
-              <motion.div
-                className="flex items-center justify-center"
-                animate={loading ? { rotate: 360 } : { rotate: 0 }}
-                transition={loading ? { duration: 1, repeat: Infinity, ease: "linear" } : { duration: 0.2 }}
-              >
-                {loading ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              <div className="flex items-center justify-center">
+                <AnimatePresence initial={false} mode="wait">
+                  {loading ? (
+                    <motion.span
+                      key="loading"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="inline-flex items-center"
                     >
-                      <Loader2 className="h-5 w-5 mr-2" />
-                    </motion.div>
-                    {text.ipDisplay.fetchLoading}
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="h-5 w-5 mr-2" />
-                    {text.ipDisplay.refreshButton}
-                  </>
-                )}
-              </motion.div>
+                      <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                      {text.ipDisplay.fetchLoading}
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="idle"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.15 }}
+                      className="inline-flex items-center"
+                    >
+                      <RefreshCw className="h-5 w-5 mr-2" />
+                      {text.ipDisplay.refreshButton}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
             </Row>
           </CardContent>
         </Card>

@@ -1,12 +1,12 @@
 export const text = {
   app: {
-    title: "IP CHECKER",
-    subtitle: "🔍 Your Public IP Address 🌐",
+    title: "Wibble.Foo",
+    subtitle: "Check your Public IP Address",
     poweredByPrefix: "⚡ Powered by",
     poweredByAnd: "and",
   },
   ipDisplay: {
-    cardDescription: "Your current public IP address information",
+    cardDescription: "Your current public IP address is:",
     errorPrefix: "⚠️ ",
     noIpFound: "🤔 No IP addresses found",
     ipv4Label: "IPv4:",
