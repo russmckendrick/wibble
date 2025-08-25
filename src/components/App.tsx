@@ -36,7 +36,7 @@ export function App() {
       >
         <motion.div className="text-center" variants={itemVariants}>
           <motion.h1 
-            className="text-5xl md:text-6xl font-black text-white mb-6 drop-shadow-[6px_6px_0px_rgba(0,0,0,1)] [text-shadow:3px_3px_0px_rgba(0,0,0,1)]"
+            className="font-black text-white mb-6 break-words leading-tight text-[clamp(1.75rem,8vw,3.5rem)] md:text-[clamp(2.5rem,6vw,4rem)] drop-shadow-[6px_6px_0px_rgba(0,0,0,1)] [text-shadow:3px_3px_0px_rgba(0,0,0,1)]"
             animate={{
               rotate: [1, -1, 1],
               scale: [1, 1.02, 1],

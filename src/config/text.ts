@@ -11,7 +11,7 @@ export const text = {
     noIpFound: "🤔 No IP addresses found",
     ipv4Label: "IPv4:",
     ipv6Label: "IPv6:",
-    fetchLoading: "🔄 Fetching...",
+    fetchLoading: "Fetching...",
     refreshButton: "Refresh IP",
     toastCopiedSuffix: " copied!",
     toastCopyFailed: "Failed to copy",
@@ -33,4 +33,3 @@ export const text = {
 } as const
 
 export type TextConfig = typeof text
-
