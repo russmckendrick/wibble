@@ -8,7 +8,10 @@
       "Bash(npx shadcn@latest add:*)",
       "WebFetch(domain:retroui.dev)",
       "WebFetch(domain:www.retroui.dev)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "WebSearch",
+      "Bash(npm run dev:*)",
+      "Bash(npm run deploy:*)"
     ],
     "deny": [],
     "ask": []
